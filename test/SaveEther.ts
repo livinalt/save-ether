@@ -55,53 +55,13 @@ describe("SaveEther", function () {
     });
   }); */
 
-/*   describe("Withdraw", function () {
-    describe("Validations", function () {
-      it("Should revert with the right error if called too soon", async function () {
-        const { saveEther } = await loadFixture(deploySaveEtherFixture);
-
-        await expect(saveEther.withdraw()).to.be.revertedWith(
-          "You can't withdraw yet"
-        );
-      });
-
-      it("Should revert with the right error if called from another account", async function () {
-        const { SaveEther, unlockTime, otherAccount } = await loadFixture(
-          deploySaveEtherFixture
-        );
-
-        // We can increase the time in Hardhat Network
-        await time.increaseTo(unlockTime);
-
-        // We use lock.connect() to send a transaction from another account
-        await expect(SaveEther.connect(otherAccount).withdraw()).to.be.revertedWith(
-          "You aren't the owner"
-        );
-      });
-
-      it("Shouldn't fail if the unlockTime has arrived and the owner calls it", async function () {
-        const { SaveEther, unlockTime } = await loadFixture(
-          deploySaveEtherFixture
-        );
-
-        // Transactions are sent using the first signer by default
-        await time.increaseTo(unlockTime);
-
-        await expect(SaveEther.withdraw()).not.to.be.reverted;
-      });
-    });
-
+  
     describe("CheckSavings", function () {
-      it("Should return the on withdrawals", async function () {
-        const { saveEther, unlockTime, lockedAmount } = await loadFixture(
-          deploySaveEtherFixture
-        );
-
-        await time.increaseTo(unlockTime);
-
-        await expect(saveEther.withdraw())
-          .to.emit(saveEther, "Withdrawal")
-          .withArgs(lockedAmount, anyValue); // We accept any value as `when` arg
+      it("Should return the balance of the address", async function () {
+        const { saveEther } = await loadFixture(deploySaveEtherFixture);
+        const deposit = ethers.parseEther("1"); // Deposit 1 ETH
+        await saveEther.deposit({ value: deposit });
+        expect(await saveEther.checkSavings("address")).to.equal(deposit);
       });
     });
 
@@ -120,11 +80,9 @@ describe("SaveEther", function () {
       });
     });
     
-    describe("checkContractBal", function () {
+    /* describe("checkContractBal", function () {
       it("Should transfer the funds to the owner", async function () {
-        const { saveEther, unlockTime, lockedAmount, owner } = await loadFixture(
-          deploySaveEtherFixture
-        );
+        const { saveEther } = await loadFixture(deploySaveEtherFixture);
 
         await time.increaseTo(unlockTime);
 
@@ -133,12 +91,10 @@ describe("SaveEther", function () {
           [lockedAmount, -lockedAmount]
         );
       });
-    });
+    }); */
 
-  }); */
-
-
-  
-  
   });
+
+
+
 });
